@@ -67,13 +67,9 @@ int	parse_input(t_node *node, char *input)
 		if (ft_strchr("\'\"", input[i]))
 		{
 			if (inside == 0) // quote starts
-			{
 				inside = input[i];
-			}
 			else if (inside == input[i]) // quote ends
-			{
 				inside = 0;
-			}
 		}
 		else if (ft_strchr("<>", input[i]) && inside == 0) // redir symbol that is not inside any quotes
 		{
@@ -89,22 +85,16 @@ int	parse_input(t_node *node, char *input)
 		else if (input[i] == '$' && inside != '\'') // dollar sign that is not inside single quotes
 		{
 			res = expand(&arg, &input[i]); // append value of env var to arg
-			if (res == -1) // some went horribly wrong
+			if (res == 0)
 			{
 				printf("expand error\n");
 				return (0);
-			}
-			if (res == 0) // env var not found
-			{
-				i++;
-				continue ;
 			}
 			if (res > 0) // arg now holds the expanded value
 			{
 				i += res; // increment i by the env vars key length
 				continue ;
 			}
-			append(&arg, '$'); // it was a dollar sign but no key after it
 		}
 		else if (input[i] == ' ' && inside == 0) // space that is not inside any quotes, this arg ready.
 		{
